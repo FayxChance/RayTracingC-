@@ -83,12 +83,41 @@ rt::Sphere::getMaterial(Point3 /* p */) {
 
 rt::Real
 rt::Sphere::rayIntersection(const Ray &ray, Point3 &p) {
-    Vector3 origineCentre(center[0]-p[0],center[1]-p[1],center[2]-p[2]);
-    Point3 pointNormal = p + ray.direction.dot(origineCentre) * ray.direction;
 
-    if (distance2(pointNormal, center) > radius*radius ){
+    Vector3 origineCentre(center[0] - ray.origin[0],
+                          center[1] - ray.origin[1],
+                          center[2] - ray.origin[2]);
+
+    Point3 pointNormal = ray.origin + ray.direction.dot(origineCentre) *
+            ray.direction;
+
+    if (distance2(pointNormal, center) > radius * radius) {
         return 1.0f;
     }
 
-    
+    float alpha;
+
+    float c = pow(ray.origin[0] - center[0], 2) +
+              pow(ray.origin[1] - center[1], 2) +
+              pow(ray.origin[2] - center[2], 2) -
+              pow(radius, 2);
+
+    float b = 2 * (ray.direction[0] + ray.direction[1] + ray.direction[2]);
+
+    float a = pow(ray.direction[0], 2) +
+              pow(ray.direction[1], 2) +
+              pow(ray.direction[2], 2);
+
+    float delta = pow(b, 2) - 4 * a * c;
+
+    if (delta > 0) {
+            float sol1 = (-b + sqrt(delta)) / (2 * a);
+            float sol2 = (-b - sqrt(delta)) / (2 * a);
+            p = sol1 < sol2 ?
+                (sol1 > 0 ? Point3(ray.origin + ray.direction * sol1) : p) :
+                (sol2 > 0 ? Point3(ray.origin + ray.direction * sol2) : p);
+            return -1.0f;
+    }
+
+
 }
