@@ -131,17 +131,32 @@ namespace rt {
         Color illumination(const Ray &ray, GraphicalObject *obj, Point3 p) {
             Material m = obj->getMaterial(p);
             Color c = m.ambient;
-            ;
+            Vector3 v = -1.0f*ray.direction/ray.direction.norm();
             for (auto it = ptrScene->myLights.begin(),
                          itE = ptrScene->myLights.end(); it != itE; it++) {
+
                 Light *l = *it;
                 Vector3 L = (l->direction(p)/l->direction(p).norm());
-                Real produitScalaire = L.dot( obj->getNormal(p)/obj->getNormal(p).norm() );
-                Real k = produitScalaire < 0 ? 0.0f : produitScalaire;
-                printf("\n Produit scalaire : %f", produitScalaire);
-                c = c + k * m.diffuse * ((*it)->color(p));
+                Vector3 normalPNormalise = obj->getNormal(p)/obj->getNormal(p).norm();
+
+                Vector3 wNormalise = reflect(v,normalPNormalise);
+
+                Real beta = wNormalise.dot(L);
+                Real coeffSpecu = 0;
+                if( beta > 0){
+                    coeffSpecu = pow(beta,m.shinyness);
+                }
+                printf("\nCoeff secu %f",beta);
+
+                Real produitScalaire = L.dot( normalPNormalise );
+                Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
+                c = c + k * m.diffuse * ((*it)->color(p)) + coeffSpecu * m.specular * ((*it)->color(p));
             }
             return c;
+        }
+        /// Les vecteurs \a w et \a n doivent être normalisés
+        Vector3 reflect(const Vector3& w, Vector3 n){
+            return (w + 2.0f * n.dot(w*1.0f)*n)/(w + 2.0f * n.dot(w*1.0f)*n).norm();
         }
     };
 
