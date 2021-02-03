@@ -101,16 +101,10 @@ rt::Sphere::rayIntersection(const Ray &ray, Point3 &p) {
     float a = 1;
 
     float delta = pow(b, 2) - 4 * a * c;
-    printf("\ndelta %f",delta );
 
     if (delta >= 0.0f) {
         float sol1 = (-b - sqrt(delta)) / (2 * a);
         float sol2 = (-b + sqrt(delta)) / (2 * a);
-        printf("\nsol 1 %f",sol1 );
-        printf("\nsol 2 %f",sol2 );
-        printf("\nA %f",a );
-        printf("\nB %f",b );
-        printf("\nC %f",c );
 
         if(sol2 < 0.0f){
             return 1.0f;
@@ -124,6 +118,5 @@ rt::Sphere::rayIntersection(const Ray &ray, Point3 &p) {
             return -1.0f;
         }
     }
-    printf("\nyolo");
     return 1.0f;
 }
