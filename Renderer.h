@@ -9,6 +9,7 @@
 #include "Color.h"
 #include "Image2D.h"
 #include "Ray.h"
+#include "Background.h"
 
 /// Namespace RayTracer
 namespace rt {
@@ -47,6 +48,8 @@ namespace rt {
     /// This structure takes care of rendering a scene.
     struct Renderer {
 
+        //Background
+        Background *ptrBackground;
         /// The scene to render
         Scene *ptrScene;
         /// The origin of the camera in space.
@@ -70,6 +73,7 @@ namespace rt {
         Renderer() : ptrScene(0) {}
 
         Renderer(Scene &scene) : ptrScene(&scene) {}
+        Renderer(Scene &scene, Background* background) : ptrScene(&scene), ptrBackground(background) {}
 
         void setScene(rt::Scene &aScene) { ptrScene = &aScene; }
 
@@ -122,7 +126,7 @@ namespace rt {
             // Look for intersection in this direction.
             Real ri = ptrScene->rayIntersection(ray, obj_i, p_i);
             // Nothing was intersected
-            if (ri >= 0.0f) return Color(0.0, 0.0, 0.0); // some background color
+            if (ri >= 0.0f) return ptrBackground->backgroundColor(ray); // some background color
             //return Color(1.0,1.0,1.0);
             return illumination(ray, obj_i, p_i);
 
@@ -131,7 +135,7 @@ namespace rt {
         Color illumination(const Ray &ray, GraphicalObject *obj, Point3 p) {
             Material m = obj->getMaterial(p);
             Color c = m.ambient;
-            Vector3 v = ray.direction/ray.direction.norm();
+            Vector3 v = ray.direction;
             for (auto it = ptrScene->myLights.begin(),
                          itE = ptrScene->myLights.end(); it != itE; it++) {
 
@@ -151,7 +155,7 @@ namespace rt {
                 Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
                 c = c + k * m.diffuse * ((*it)->color(p)) + coeffSpecu * m.specular * ((*it)->color(p));
                 
-                c = shadow(ray, c);
+                c += -1.0f * shadow(ray, c);
             }
             return c;
         }
@@ -172,7 +176,7 @@ namespace rt {
             Color C = light_color;
             while (C.max() > 0.003f)
             {
-                p = p + L*0.1f;
+                p = p + L*0.01f;
                 Ray otherRay(p, L);
                 GraphicalObject *object;
                 Point3 pPrime;

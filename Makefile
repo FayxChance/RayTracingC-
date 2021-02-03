@@ -425,6 +425,7 @@ Viewer.o: Viewer.cpp Viewer.h \
 		Light.h \
 		Renderer.h \
 		Image2D.h \
+		Background.h \
 		Image2DWriter.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Viewer.o Viewer.cpp
 

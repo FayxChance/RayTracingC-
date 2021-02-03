@@ -62,7 +62,8 @@ rt::Viewer::keyPressEvent(QKeyEvent *e)
     {
       int w = camera()->screenWidth();
       int h = camera()->screenHeight();
-      Renderer renderer( *ptrScene );
+      MyBackground background;
+      Renderer renderer( *ptrScene, &background );
       qglviewer::Vec orig, dir;
       camera()->convertClickToLine( QPoint( 0,0 ), orig, dir );
       Vector3 origin( orig );
