@@ -23,7 +23,7 @@ int main(int argc, char** argv)
   // Light at infinity
   // Light* light0 = new PointLight( GL_LIGHT0, Point4( 0,0,1,0 ),
   //                                   Color( 1.0, 1.0, 1.0 ) );
-  Light* light1 = new PointLight( GL_LIGHT1, Point4( 2,2,2,1 ),
+  Light* light1 = new PointLight( GL_LIGHT1, Point4( 0,10,0,1 ),
                                   Color( 1.0, 1.0, 1.0 ) );
   // scene.addLight( light0 );
   scene.addLight( light1 );
