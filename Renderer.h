@@ -155,7 +155,7 @@ namespace rt {
                 Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
                 c = c + k * m.diffuse * ((*it)->color(p)) + coeffSpecu * m.specular * ((*it)->color(p));
                 
-                c += shadow(Ray(p, L), c);
+                c = shadow(Ray(p, L), c);
             }
             return c;
         }
