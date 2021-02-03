@@ -73,7 +73,8 @@ namespace rt {
         Renderer() : ptrScene(0) {}
 
         Renderer(Scene &scene) : ptrScene(&scene) {}
-        Renderer(Scene &scene, Background* background) : ptrScene(&scene), ptrBackground(background) {}
+
+        Renderer(Scene &scene, Background *background) : ptrScene(&scene), ptrBackground(background) {}
 
         void setScene(rt::Scene &aScene) { ptrScene = &aScene; }
 
@@ -123,14 +124,27 @@ namespace rt {
             GraphicalObject *obj_i = 0; // pointer to intersected object
             Point3 p_i;       // point of intersection
 
-            // Look for intersection in this direction.
             Real ri = ptrScene->rayIntersection(ray, obj_i, p_i);
-            // Nothing was intersected
+
+
             if (ri >= 0.0f) return ptrBackground->backgroundColor(ray); // some background color
-            //return Color(1.0,1.0,1.0);
-            return illumination(ray, obj_i, p_i);
+
+            Material m = obj_i->getMaterial(p_i);
+            if (ray.depth > 0 && m.coef_reflexion != 0) {
+                Vector3 normal = obj_i->getNormal(p_i) / obj_i->getNormal(p_i).norm();
+
+                Vector3 rayonSortant = reflect(ray.direction/(ray.direction.norm()), normal);
+
+                Ray ray_refl(p_i + rayonSortant * 0.1f,rayonSortant,ray.depth - 1);
+                Color c_refl = trace(ray_refl);
+                result += c_refl * m.specular * m.coef_reflexion;
+            }
+            result += illumination(ray, obj_i, p_i);
+
+            return result;
 
         }
+
         /// Calcule l'illumination de l'objet \a obj au point \a p, sachant que l'observateur est le rayon \a ray.
         Color illumination(const Ray &ray, GraphicalObject *obj, Point3 p) {
             Material m = obj->getMaterial(p);
@@ -140,27 +154,28 @@ namespace rt {
                          itE = ptrScene->myLights.end(); it != itE; it++) {
 
                 Light *l = *it;
-                Vector3 L = (l->direction(p)/l->direction(p).norm());
-                Vector3 normalPNormalise = obj->getNormal(p)/obj->getNormal(p).norm();
+                Vector3 L = (l->direction(p) / l->direction(p).norm());
+                Vector3 normalPNormalise = obj->getNormal(p) / obj->getNormal(p).norm();
 
-                Vector3 wNormalise = reflect(v,normalPNormalise);
+                Vector3 wNormalise = reflect(v, normalPNormalise);
 
                 Real beta = wNormalise.dot(L);
                 Real coeffSpecu = 0;
-                if( beta > 0){
-                    coeffSpecu = pow(beta,m.shinyness);
+                if (beta > 0) {
+                    coeffSpecu = pow(beta, m.shinyness);
                 }
 
-                Real produitScalaire = L.dot( normalPNormalise );
+                Real produitScalaire = L.dot(normalPNormalise);
                 Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
                 c = c + k * m.diffuse * ((*it)->color(p)) + coeffSpecu * m.specular * ((*it)->color(p));
-                
+
                 c = shadow(Ray(p, L), c);
             }
             return c;
         }
+
         /// Les vecteurs \a w et \a n doivent être normalisés
-        Vector3 reflect(const Vector3& w, Vector3 n){
+        Vector3 reflect(const Vector3 &w, Vector3 n) {
             return (w + 2.0f * (-1.0f * n.dot(w)) * n) / (w + 2.0f * (-1.0f * n.dot(w)) * n).norm();
         }
 
@@ -169,23 +184,21 @@ namespace rt {
         /// retourne light_color, sinon si un des objets traversés est opaque,
         /// retourne du noir, et enfin si les objets traversés sont
         /// transparents, attenue la couleur.
-        Color shadow( const Ray& ray, Color light_color ) {
+        Color shadow(const Ray &ray, Color light_color) {
             Point3 p = ray.origin;
             Vector3 L = ray.direction;
 
             Color C = light_color;
-            while (C.max() > 0.003f)
-            {
-                p = p + L*0.01f;
+            while (C.max() > 0.003f) {
+                p = p + L * 0.01f;
                 Ray otherRay(p, L);
                 GraphicalObject *object;
                 Point3 pPrime;
-                if(ptrScene->rayIntersection(otherRay, object, pPrime) <= 0.0f) {
+                if (ptrScene->rayIntersection(otherRay, object, pPrime) <= 0.0f) {
                     Material m = object->getMaterial(pPrime);
                     C = C * m.diffuse * m.coef_refraction;
                     p = pPrime;
-                }
-                else {
+                } else {
                     break;
                 }
             }
