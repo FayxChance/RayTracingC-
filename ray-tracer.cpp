@@ -45,19 +45,19 @@ int main(int argc, char** argv)
     Real radius = 1.0;
 // Objects
     Sphere* sphere1 = new Sphere( bouleOriginelPos, radius, Material::bronze() );
-    Sphere* sphere2 = new Sphere( bouleOriginelPos + 2.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::emerald() );
-    Sphere* sphere3 = new Sphere( bouleOriginelPos + 4.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::whitePlastic() );
-    Sphere* sphere4 = new Sphere( bouleOriginelPos + 6.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::glass() );
+    Sphere* sphere2 = new Sphere( bouleOriginelPos + 3.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::emerald() );
+    Sphere* sphere3 = new Sphere( bouleOriginelPos + 6.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::whitePlastic() );
+    Sphere* sphere4 = new Sphere( bouleOriginelPos + 9.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::glass() );
     scene.addObject( sphere1 );
     scene.addObject( sphere2 );
     scene.addObject( sphere3 );
     scene.addObject( sphere4 );
 
 
-    addBubble(scene,bouleOriginelPos + 0.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::bronze());
-    addBubble(scene,bouleOriginelPos + 2.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::emerald());
-    addBubble(scene,bouleOriginelPos + 4.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::whitePlastic());
-    addBubble(scene,bouleOriginelPos + 6.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::glass());
+    addBubble(scene,bouleOriginelPos + 0.0f * xUnit + 3.0f * yUnit + 0.0f * zUnit,radius,Material::bronze());
+    addBubble(scene,bouleOriginelPos + 3.0f * xUnit + 3.0f * yUnit + 0.0f * zUnit,radius,Material::emerald());
+    addBubble(scene,bouleOriginelPos + 6.0f * xUnit + 3.0f * yUnit + 0.0f * zUnit,radius,Material::whitePlastic());
+    addBubble(scene,bouleOriginelPos + 9.0f * xUnit + 3.0f * yUnit + 0.0f * zUnit,radius,Material::glass());
 
     // Instantiate the viewer.
   Viewer viewer;
