@@ -48,10 +48,10 @@ namespace rt {
     /// This structure takes care of rendering a scene.
     struct Renderer {
 
-        //Background
-        Background *ptrBackground;
         /// The scene to render
         Scene *ptrScene;
+        /// Background
+        Background *ptrBackground;
         /// The origin of the camera in space.
         Point3 myOrigin;
         /// (myOrigin, myOrigin+myDirUL) forms a ray going through the upper-left
@@ -235,7 +235,7 @@ namespace rt {
             while (C.max() > 0.003f) {
                 p = p + L * 0.01f;
                 Ray otherRay(p, L);
-                GraphicalObject *object;
+                GraphicalObject *object = nullptr;
                 Point3 pPrime;
                 if (ptrScene->rayIntersection(otherRay, object, pPrime) <= 0.0f) {
                     Material m = object->getMaterial(pPrime);
