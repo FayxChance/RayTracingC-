@@ -1,22 +1,22 @@
 <!DOCTYPE QGLVIEWER>
 <QGLViewer version="2.7.2">
   <State stereo="false">
-    <foregroundColor blue="180" red="180" green="180"/>
-    <backgroundColor blue="51" red="51" green="51"/>
+    <foregroundColor green="180" blue="180" red="180"/>
+    <backgroundColor green="51" blue="51" red="51"/>
   </State>
-  <Display gridIsDrawn="true" axisIsDrawn="true" cameraIsEdited="false" FPSIsDisplayed="true"/>
-  <Geometry height="711" posX="12" width="1342" posY="28" fullScreen="false"/>
+  <Display FPSIsDisplayed="true" cameraIsEdited="false" axisIsDrawn="true" gridIsDrawn="true"/>
+  <Geometry posX="578" fullScreen="false" height="711" posY="0" width="1342"/>
   <Camera>
-    <Parameters sceneRadius="20.7846" Type="PERSPECTIVE" fieldOfView="0.785398" zClippingCoefficient="1.73205" orthoCoef="4.33106e-29" zNearCoefficient="0.005">
-      <SceneCenter y="0" z="10" x="0"/>
+    <Parameters sceneRadius="20.7846" zNearCoefficient="0.005" zClippingCoefficient="1.73205" fieldOfView="0.785398" orthoCoef="1.06216e-32" Type="PERSPECTIVE">
+      <SceneCenter z="10" y="0" x="0"/>
     </Parameters>
     <Stereo IODist="0.062" focusDistance="50.1785" physScreenWidth="0.5"/>
     <ManipulatedCameraFrame>
-      <position y="11.0919" z="8.08719" x="-16.1627"/>
-      <orientation q0="-0.319458" q2="0.733188" q3="-0.346887" q1="0.489949"/>
-      <ManipulatedParameters rotSens="1" spinSens="0.3" transSens="1" wheelSens="1" zoomSens="1"/>
-      <ManipulatedCameraParameters zoomsOnPivotPoint="false" rotatesAroundUpVector="false" flySpeed="0.207846">
-        <sceneUpVector y="-0.116185" z="0.959545" x="-0.256464"/>
+      <position z="23.8448" y="8.90834" x="1.14086"/>
+      <orientation q0="0" q1="-3.58604e-17" q2="-0.707107" q3="-0.707107"/>
+      <ManipulatedParameters rotSens="1" wheelSens="1" transSens="1" spinSens="0.3" zoomSens="1"/>
+      <ManipulatedCameraParameters zoomsOnPivotPoint="false" flySpeed="0.207846" rotatesAroundUpVector="false">
+        <sceneUpVector z="0.959545" y="-0.116185" x="-0.256464"/>
       </ManipulatedCameraParameters>
     </ManipulatedCameraFrame>
   </Camera>

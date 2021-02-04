@@ -119,27 +119,40 @@ namespace rt {
         /// The rendering routine for one ray.
         /// @return the color for the given ray.
         Color trace(const Ray &ray) {
+
             assert(ptrScene != 0);
+
             Color result = Color(0.0, 0.0, 0.0);
-            GraphicalObject *obj_i = 0; // pointer to intersected object
-            Point3 p_i;       // point of intersection
+            GraphicalObject *obj_i = 0;
+            Point3 p_i;
 
             Real ri = ptrScene->rayIntersection(ray, obj_i, p_i);
 
 
             if (ri >= 0.0f) return ptrBackground->backgroundColor(ray); // some background color
 
+            Vector3 normal = obj_i->getNormal(p_i) / obj_i->getNormal(p_i).norm();
             Material m = obj_i->getMaterial(p_i);
-            if (ray.depth > 0 && m.coef_reflexion != 0) {
-                Vector3 normal = obj_i->getNormal(p_i) / obj_i->getNormal(p_i).norm();
 
-                Vector3 rayonSortant = reflect(ray.direction/(ray.direction.norm()), normal);
-
-                Ray ray_refl(p_i + rayonSortant * 0.1f,rayonSortant,ray.depth - 1);
+            //Reflexion
+            if (ray.depth > 0 && m.coef_reflexion != 0.0f) {
+                Vector3 rayonSortant = reflect(ray.direction / (ray.direction.norm()), normal);
+                Ray ray_refl(p_i + rayonSortant * 0.1f, rayonSortant, ray.depth - 1);
                 Color c_refl = trace(ray_refl);
                 result += c_refl * m.specular * m.coef_reflexion;
             }
-            result += illumination(ray, obj_i, p_i);
+
+            //Refraction
+            if (ray.depth > 0 && m.coef_refraction != 0.0f) {
+                Ray rayonSortant = refractionRay(ray, p_i, normal, m);
+                Color c_refr = trace(rayonSortant);
+                result += c_refr * m.diffuse * m.coef_refraction;
+            }
+
+            //result +=  illumination(ray, obj_i, p_i) ;
+
+            result +=  ray.depth == 0 ? illumination(ray, obj_i, p_i) :
+                     illumination(ray, obj_i, p_i) * m.coef_diffusion;
 
             return result;
 
@@ -147,36 +160,66 @@ namespace rt {
 
         /// Calcule l'illumination de l'objet \a obj au point \a p, sachant que l'observateur est le rayon \a ray.
         Color illumination(const Ray &ray, GraphicalObject *obj, Point3 p) {
+
             Material m = obj->getMaterial(p);
             Color c = m.ambient;
             Vector3 v = ray.direction;
+
             for (auto it = ptrScene->myLights.begin(),
                          itE = ptrScene->myLights.end(); it != itE; it++) {
 
                 Light *l = *it;
+
                 Vector3 L = (l->direction(p) / l->direction(p).norm());
                 Vector3 normalPNormalise = obj->getNormal(p) / obj->getNormal(p).norm();
 
                 Vector3 wNormalise = reflect(v, normalPNormalise);
-
                 Real beta = wNormalise.dot(L);
                 Real coeffSpecu = 0;
+
                 if (beta > 0) {
                     coeffSpecu = pow(beta, m.shinyness);
                 }
 
                 Real produitScalaire = L.dot(normalPNormalise);
                 Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
-                c = c + k * m.diffuse * ((*it)->color(p)) + coeffSpecu * m.specular * ((*it)->color(p));
 
-                c = shadow(Ray(p, L), c);
+                Color lightColor = (*l).color(p);
+                Color shadowColor = shadow(Ray(p, L),lightColor);
+
+                c = c + k * m.diffuse * (shadowColor) + coeffSpecu * m.specular * (shadowColor);
             }
             return c;
         }
 
         /// Les vecteurs \a w et \a n doivent être normalisés
         Vector3 reflect(const Vector3 &w, Vector3 n) {
-            return (w + 2.0f * (-1.0f * n.dot(w)) * n) / (w + 2.0f * (-1.0f * n.dot(w)) * n).norm();
+
+            return (w + 2.0f * (n.dot(-1.0f * w)) * n) / (w + 2.0f * ( n.dot(-1.0f * w)) * n).norm();
+        }
+
+        Ray refractionRay(const Ray &aRay, const Point3 &p, Vector3 N, const Material &m) {
+
+            Vector3 V = aRay.direction / aRay.direction.norm();
+            Vector3 n = N/N.norm();
+            Real c = - n.dot(V);
+
+            Vector3 refract;
+            Vector3 vRefract;
+            Ray res;
+
+            if (V.dot(n) < 0.0f) {
+                Real r = m.out_refractive_index / m.in_refractive_index;
+                refract = r * V + (r * c - sqrt(std::max(1.0f - r * r * (1.0f - c * c), 0.0f))) * n;
+            } else {
+                Real r = m.in_refractive_index / m.out_refractive_index;
+                refract = r * V + (r * c + sqrt(std::max(1.0f - r * r * (1.0f - c * c), 0.0f))) * n;
+            }
+
+            vRefract = refract / refract.norm();
+            res = Ray(p + vRefract * 0.0001f, vRefract, aRay.depth - 1);
+
+            return res;
         }
 
         /// Calcule la couleur de la lumière (donnée par light_color) dans la
@@ -186,7 +229,7 @@ namespace rt {
         /// transparents, attenue la couleur.
         Color shadow(const Ray &ray, Color light_color) {
             Point3 p = ray.origin;
-            Vector3 L = ray.direction;
+            Vector3 L = ray.direction/ ray.direction.norm();
 
             Color C = light_color;
             while (C.max() > 0.003f) {

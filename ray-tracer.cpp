@@ -12,6 +12,17 @@
 using namespace std;
 using namespace rt;
 
+void addBubble( Scene& scene, Point3 c, Real r, Material transp_m )
+{
+    Material revert_m = transp_m;
+    std::swap( revert_m.in_refractive_index, revert_m.out_refractive_index );
+    Sphere* sphere_out = new Sphere( c, r, transp_m );
+    Sphere* sphere_in  = new Sphere( c, r-0.02f, revert_m );
+    scene.addObject( sphere_out );
+    scene.addObject( sphere_in );
+}
+
+
 int main(int argc, char** argv)
 {
   // Read command lines arguments.
@@ -31,11 +42,16 @@ int main(int argc, char** argv)
     Sphere* sphere1 = new Sphere( Point3( 0, 0, 0), 2.0, Material::bronze() );
     Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::emerald() );
     Sphere* sphere3 = new Sphere( Point3( 6, 6, 0), 3.0, Material::whitePlastic() );
+    Sphere* sphere4 = new Sphere( Point3( 6, 8, 6), 3.0, Material::glass() );
     scene.addObject( sphere1 );
     scene.addObject( sphere2 );
     scene.addObject( sphere3 );
-  
-  // Instantiate the viewer.
+    scene.addObject( sphere4 );
+
+
+    addBubble(scene,Point3(0,2,2),2.0,Material::glass());
+
+    // Instantiate the viewer.
   Viewer viewer;
   // Give a name
   viewer.setWindowTitle("Ray-tracer preview");
