@@ -38,18 +38,26 @@ int main(int argc, char** argv)
                                     Color( 1.0, 1.0, 1.0 ) );
     scene.addLight( light0 );
     scene.addLight( light1 );
+    Point3 bouleOriginelPos(0,0,0);
+    Vector3 xUnit(1.0,0,0);
+    Vector3 yUnit(0,1.0,0);
+    Vector3 zUnit(0,0,1.0);
+    Real radius = 1.0;
 // Objects
-    Sphere* sphere1 = new Sphere( Point3( 0, 0, 0), 2.0, Material::bronze() );
-    Sphere* sphere2 = new Sphere( Point3( 0, 4, 0), 1.0, Material::emerald() );
-    Sphere* sphere3 = new Sphere( Point3( 6, 6, 0), 3.0, Material::whitePlastic() );
-    Sphere* sphere4 = new Sphere( Point3( 6, 8, 6), 3.0, Material::glass() );
+    Sphere* sphere1 = new Sphere( bouleOriginelPos, radius, Material::bronze() );
+    Sphere* sphere2 = new Sphere( bouleOriginelPos + 2.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::emerald() );
+    Sphere* sphere3 = new Sphere( bouleOriginelPos + 4.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::whitePlastic() );
+    Sphere* sphere4 = new Sphere( bouleOriginelPos + 6.0f * xUnit + 0.0f * yUnit + 0.0f * zUnit, radius, Material::glass() );
     scene.addObject( sphere1 );
     scene.addObject( sphere2 );
     scene.addObject( sphere3 );
     scene.addObject( sphere4 );
 
 
-    addBubble(scene,Point3(0,2,2),2.0,Material::glass());
+    addBubble(scene,bouleOriginelPos + 0.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::bronze());
+    addBubble(scene,bouleOriginelPos + 2.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::emerald());
+    addBubble(scene,bouleOriginelPos + 4.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::whitePlastic());
+    addBubble(scene,bouleOriginelPos + 6.0f * xUnit + 2.0f * yUnit + 0.0f * zUnit,radius,Material::glass());
 
     // Instantiate the viewer.
   Viewer viewer;
