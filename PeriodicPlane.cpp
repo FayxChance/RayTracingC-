@@ -37,7 +37,7 @@ void rt::PeriodicPlane::draw(rt::Viewer &viewer) {
 }
 
 rt::Vector3 rt::PeriodicPlane::getNormal(rt::Point3 p) {
-    return u.cross(v);;
+    return u.cross(v)/ u.cross(v).norm();;
 }
 
 rt::Material rt::PeriodicPlane::getMaterial(rt::Point3 p) {

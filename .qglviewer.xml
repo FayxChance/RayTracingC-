@@ -1,22 +1,22 @@
 <!DOCTYPE QGLVIEWER>
 <QGLViewer version="2.7.2">
   <State stereo="false">
-    <foregroundColor green="180" red="180" blue="180"/>
-    <backgroundColor green="51" red="51" blue="51"/>
+    <foregroundColor red="180" green="180" blue="180"/>
+    <backgroundColor red="51" green="51" blue="51"/>
   </State>
-  <Display gridIsDrawn="true" cameraIsEdited="false" FPSIsDisplayed="true" axisIsDrawn="true"/>
-  <Geometry posX="578" width="1342" fullScreen="false" height="711" posY="0"/>
+  <Display gridIsDrawn="true" axisIsDrawn="true" FPSIsDisplayed="true" cameraIsEdited="false"/>
+  <Geometry posX="578" fullScreen="false" height="711" width="1342" posY="0"/>
   <Camera>
-    <Parameters sceneRadius="20.7846" zNearCoefficient="0.005" fieldOfView="0.785398" orthoCoef="1.15315e-37" zClippingCoefficient="1.73205" Type="PERSPECTIVE">
-      <SceneCenter y="0" x="0" z="10"/>
+    <Parameters zNearCoefficient="0.005" zClippingCoefficient="1.73205" orthoCoef="5.10486e-39" fieldOfView="0.785398" sceneRadius="20.7846" Type="PERSPECTIVE">
+      <SceneCenter y="0" z="10" x="0"/>
     </Parameters>
-    <Stereo IODist="0.062" physScreenWidth="0.5" focusDistance="50.1785"/>
+    <Stereo physScreenWidth="0.5" IODist="0.062" focusDistance="50.1785"/>
     <ManipulatedCameraFrame>
-      <position y="-0.885068" x="6.26094" z="-10.3161"/>
-      <orientation q3="-0.0901186" q1="-0.0655493" q0="-0.993274" q2="-0.0314504"/>
-      <ManipulatedParameters spinSens="0.3" wheelSens="1" rotSens="1" transSens="1" zoomSens="1"/>
-      <ManipulatedCameraParameters rotatesAroundUpVector="false" zoomsOnPivotPoint="false" flySpeed="0.207846">
-        <sceneUpVector y="-0.116185" x="-0.256464" z="0.959545"/>
+      <position y="9.74248" z="13.3072" x="-38.0818"/>
+      <orientation q0="-0.633519" q3="0.150265" q1="-0.0156785" q2="0.758834"/>
+      <ManipulatedParameters zoomSens="1" rotSens="1" wheelSens="1" spinSens="0.3" transSens="1"/>
+      <ManipulatedCameraParameters flySpeed="0.207846" rotatesAroundUpVector="false" zoomsOnPivotPoint="false">
+        <sceneUpVector y="-0.116185" z="0.959545" x="-0.256464"/>
       </ManipulatedCameraParameters>
     </ManipulatedCameraFrame>
   </Camera>

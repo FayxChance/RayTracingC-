@@ -110,8 +110,9 @@ namespace rt {
                     int random = 10 + rand()%11;
                     Color result(0,0,0);
                     Color moyRes(0,0,0);
+                    int i;
                     bool flag = false;
-                    for (int i = 0; i < random && ! flag; ++i) {
+                    for (i = 0; i < random && ! flag; ++i) {
                         if(i >= 4){
                             Color temp = (moyRes * (1.0f / i) + (-1.0f * result));
                             if(temp.b() < 0.01f && temp.g() < 0.01f && temp.r() < 0.01f){
@@ -121,7 +122,7 @@ namespace rt {
                         result = trace(eye_ray);
                         moyRes+=result;
                     }
-                    moyRes = moyRes*(1/random);
+                    moyRes = moyRes*(1.0f/i);
                     image.at(x, y) = moyRes.clamp();
                 }
             }
