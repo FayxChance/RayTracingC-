@@ -93,6 +93,41 @@ namespace rt {
         }
 
 
+        void RandoRender(Image2D<Color> &image, int max_depth) {
+            std::cout << "Rendering into image ... might take a while." << std::endl;
+            image = Image2D<Color>(myWidth, myHeight);
+            for (int y = 0; y < myHeight; ++y) {
+                Real ty = (Real) y / (Real) (myHeight - 1);
+                progressBar(std::cout, ty, 1.0);
+                Vector3 dirL = (1.0f - ty) * myDirUL + ty * myDirLL;
+                Vector3 dirR = (1.0f - ty) * myDirUR + ty * myDirLR;
+                dirL /= dirL.norm();
+                dirR /= dirR.norm();
+                for (int x = 0; x < myWidth; ++x) {
+                    Real tx = (Real) x / (Real) (myWidth - 1);
+                    Vector3 dir = (1.0f - tx) * dirL + tx * dirR;
+                    Ray eye_ray = Ray(myOrigin, dir, max_depth);
+                    int random = 10 + rand()%11;
+                    Color result(0,0,0);
+                    Color moyRes(0,0,0);
+                    bool flag = false;
+                    for (int i = 0; i < random && ! flag; ++i) {
+                        if(i >= 4){
+                            Color temp = (moyRes * (1.0f / i) + (-1.0f * result));
+                            if(temp.b() < 0.01f && temp.g() < 0.01f && temp.r() < 0.01f){
+                                flag = !flag;
+                            }
+                        }
+                        result = trace(eye_ray);
+                        moyRes+=result;
+                    }
+                    moyRes = moyRes*(1/random);
+                    image.at(x, y) = moyRes.clamp();
+                }
+            }
+            std::cout << "Done." << std::endl;
+        }
+
         /// The main rendering routine
         void render(Image2D<Color> &image, int max_depth) {
             std::cout << "Rendering into image ... might take a while." << std::endl;
