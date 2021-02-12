@@ -53,7 +53,7 @@ rt::Sphere::draw(Viewer & /* viewer */ ) {
         glNormal3fv(getNormal(p));
         glVertex3fv(p);
     }
-    glEnd();
+    glEnd();    
 }
 
 rt::Point3
