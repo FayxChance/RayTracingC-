@@ -116,6 +116,23 @@ namespace rt {
         }
 
 
+        Color background( const Ray& ray )
+        {
+            Color result = Color( 0.0, 0.0, 0.0 );
+            for ( Light* light : ptrScene->myLights )
+            {
+                Real cos_a = light->direction( ray.origin ).dot( ray.direction );
+                if ( cos_a > 0.99f )
+                {
+                    Real a = acos( cos_a ) * 360.0 / M_PI / 8.0;
+                    a = std::max( 1.0f - a, 0.0f );
+                    result += light->color( ray.origin ) * a * a;
+                }
+            }
+            if ( ptrBackground != 0 ) result += ptrBackground->backgroundColor( ray );
+            return result;
+        }
+
         /// The rendering routine for one ray.
         /// @return the color for the given ray.
         Color trace(const Ray &ray) {
@@ -129,7 +146,7 @@ namespace rt {
             Real ri = ptrScene->rayIntersection(ray, obj_i, p_i);
 
 
-            if (ri >= 0.0f) return ptrBackground->backgroundColor(ray); // some background color
+            if (ri >= 0.0f) return background(ray); // some background color
 
             Vector3 normal = obj_i->getNormal(p_i) / obj_i->getNormal(p_i).norm();
             Material m = obj_i->getMaterial(p_i);

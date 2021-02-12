@@ -54,10 +54,12 @@ OBJECTS_DIR   = ./
 
 SOURCES       = Viewer.cpp \
 		ray-tracer.cpp \
-		Sphere.cpp 
+		Sphere.cpp \
+		PeriodicPlane.cpp 
 OBJECTS       = Viewer.o \
 		ray-tracer.o \
-		Sphere.o
+		Sphere.o \
+		PeriodicPlane.o
 DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/common/unix.conf \
 		/usr/lib/qt/mkspecs/common/linux.conf \
@@ -268,9 +270,11 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		Image2D.h \
 		Image2DWriter.h \
 		Renderer.h \
-		Ray.h Viewer.cpp \
+		Ray.h \
+		PeriodicPlane.h Viewer.cpp \
 		ray-tracer.cpp \
-		Sphere.cpp
+		Sphere.cpp \
+		PeriodicPlane.cpp
 QMAKE_TARGET  = ray-tracer
 DESTDIR       = 
 TARGET        = ray-tracer
@@ -700,8 +704,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents Viewer.h PointVector.h Color.h Sphere.h GraphicalObject.h Light.h Material.h PointLight.h Image2D.h Image2DWriter.h Renderer.h Ray.h $(DISTDIR)/
-	$(COPY_FILE) --parents Viewer.cpp ray-tracer.cpp Sphere.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents Viewer.h PointVector.h Color.h Sphere.h GraphicalObject.h Light.h Material.h PointLight.h Image2D.h Image2DWriter.h Renderer.h Ray.h PeriodicPlane.h $(DISTDIR)/
+	$(COPY_FILE) --parents Viewer.cpp ray-tracer.cpp Sphere.cpp PeriodicPlane.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -774,7 +778,8 @@ ray-tracer.o: ray-tracer.cpp Viewer.h \
 		Ray.h \
 		Light.h \
 		Sphere.h \
-		PointLight.h
+		PointLight.h \
+		PeriodicPlane.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ray-tracer.o ray-tracer.cpp
 
 Sphere.o: Sphere.cpp Sphere.h \
@@ -785,6 +790,15 @@ Sphere.o: Sphere.cpp Sphere.h \
 		Color.h \
 		Ray.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Sphere.o Sphere.cpp
+
+PeriodicPlane.o: PeriodicPlane.cpp PeriodicPlane.h \
+		GraphicalObject.h \
+		Viewer.h \
+		PointVector.h \
+		Material.h \
+		Color.h \
+		Ray.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PeriodicPlane.o PeriodicPlane.cpp
 
 ####### Install
 
