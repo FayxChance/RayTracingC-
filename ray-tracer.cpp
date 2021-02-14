@@ -48,9 +48,13 @@ int main(int argc, char** argv)
     scene.addObject(sphere1);
 
 
-    PeriodicPlane* pplane = new PeriodicPlane( Point3( 0.0, 0.0, 0.0 ), Vector3( 5.0, 0.0, 0.0 ), Vector3( 0.0, 5.0, 0.0 ),
+    PeriodicPlane* pplaneH = new PeriodicPlane( Point3( 0.0, 0.0, 0.0 ), Vector3( 1.0, 0.0, 0.0 ), Vector3( 0.0, 1.0, 0.0 ),
         Material::whitePlastic(), Material::blackMatter(), 0.05f ); 
-    scene.addObject(pplane);
+        
+    PeriodicPlane* pplaneV = new PeriodicPlane( Point3( 0, 0, 0 ), Vector3( 0, 1.0, 0 ), Vector3( 0, 0, 1.0 ),
+        Material::glass(), Material::blackMatter(), 0.025f );
+    scene.addObject(pplaneH);
+    scene.addObject(pplaneV);
 
     // Instantiate the viewer.
   Viewer viewer;
