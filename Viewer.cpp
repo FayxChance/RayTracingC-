@@ -81,8 +81,16 @@ rt::Viewer::keyPressEvent(QKeyEvent *e) {
         }
         Image2D<Color> image(w, h);
         renderer.setResolution(image.w(), image.h());
+
+        /*Sans anti aliasing */
+        //renderer.render( image, maxDepth );
+        //renderer.RandoRender(image, maxDepth);
+
+
+        /*Avec anti aliasing*/
         //renderer.render( image, maxDepth );
         renderer.RandoRender(image, maxDepth);
+
         ofstream output("output.ppm");
         Image2DWriter<Color>::write(image, output, true);
         output.close();

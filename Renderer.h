@@ -107,22 +107,22 @@ namespace rt {
                     Real tx = (Real) x / (Real) (myWidth - 1);
                     Vector3 dir = (1.0f - tx) * dirL + tx * dirR;
                     Ray eye_ray = Ray(myOrigin, dir, max_depth);
-                    int random = 10 + rand()%11;
-                    Color result(0,0,0);
-                    Color moyRes(0,0,0);
+                    int random = 10 + rand() % 11;
+                    Color result(0, 0, 0);
+                    Color moyRes(0, 0, 0);
                     int i;
                     bool flag = false;
-                    for (i = 0; i < random && ! flag; ++i) {
-                        if(i >= 4){
+                    for (i = 0; i < random && !flag; ++i) {
+                        if (i >= 4) {
                             Color temp = (moyRes * (1.0f / i) + (-1.0f * result));
-                            if(temp.b() < 0.01f && temp.g() < 0.01f && temp.r() < 0.01f){
+                            if (temp.b() < 0.01f && temp.g() < 0.01f && temp.r() < 0.01f) {
                                 flag = !flag;
                             }
                         }
                         result = trace(eye_ray);
-                        moyRes+=result;
+                        moyRes += result;
                     }
-                    moyRes = moyRes*(1.0f/i);
+                    moyRes = moyRes * (1.0f / i);
                     image.at(x, y) = moyRes.clamp();
                 }
             }
@@ -152,20 +152,17 @@ namespace rt {
         }
 
 
-        Color background( const Ray& ray )
-        {
-            Color result = Color( 0.0, 0.0, 0.0 );
-            for ( Light* light : ptrScene->myLights )
-            {
-                Real cos_a = light->direction( ray.origin ).dot( ray.direction );
-                if ( cos_a > 0.99f )
-                {
-                    Real a = acos( cos_a ) * 360.0 / M_PI / 8.0;
-                    a = std::max( 1.0f - a, 0.0f );
-                    result += light->color( ray.origin ) * a * a;
+        Color background(const Ray &ray) {
+            Color result = Color(0.0, 0.0, 0.0);
+            for (Light *light : ptrScene->myLights) {
+                Real cos_a = light->direction(ray.origin).dot(ray.direction);
+                if (cos_a > 0.99f) {
+                    Real a = acos(cos_a) * 360.0 / M_PI / 8.0;
+                    a = std::max(1.0f - a, 0.0f);
+                    result += light->color(ray.origin) * a * a;
                 }
             }
-            if ( ptrBackground != 0 ) result += ptrBackground->backgroundColor( ray );
+            if (ptrBackground != 0) result += ptrBackground->backgroundColor(ray);
             return result;
         }
 
@@ -204,8 +201,8 @@ namespace rt {
 
             //result +=  illumination(ray, obj_i, p_i) ;
 
-            result +=  ray.depth == 0 ? illumination(ray, obj_i, p_i) :
-                     illumination(ray, obj_i, p_i) * m.coef_diffusion;
+            result += ray.depth == 0 ? illumination(ray, obj_i, p_i) :
+                      illumination(ray, obj_i, p_i) * m.coef_diffusion;
 
             return result;
 
@@ -238,7 +235,7 @@ namespace rt {
                 Real k = produitScalaire < 0.0f ? 0.0f : produitScalaire;
 
                 Color lightColor = (*l).color(p);
-                Color shadowColor = shadow(Ray(p, L),lightColor);
+                Color shadowColor = shadow(Ray(p, L), lightColor);
 
                 c = c + k * m.diffuse * (shadowColor) + coeffSpecu * m.specular * (shadowColor);
             }
@@ -248,14 +245,14 @@ namespace rt {
         /// Les vecteurs \a w et \a n doivent être normalisés
         Vector3 reflect(const Vector3 &w, Vector3 n) {
 
-            return (w + 2.0f * (n.dot(-1.0f * w)) * n) / (w + 2.0f * ( n.dot(-1.0f * w)) * n).norm();
+            return (w + 2.0f * (n.dot(-1.0f * w)) * n) / (w + 2.0f * (n.dot(-1.0f * w)) * n).norm();
         }
 
         Ray refractionRay(const Ray &aRay, const Point3 &p, Vector3 N, const Material &m) {
 
             Vector3 V = aRay.direction / aRay.direction.norm();
-            Vector3 n = N/N.norm();
-            Real c = - n.dot(V);
+            Vector3 n = N / N.norm();
+            Real c = -n.dot(V);
 
             Vector3 refract;
             Vector3 vRefract;
@@ -282,7 +279,7 @@ namespace rt {
         /// transparents, attenue la couleur.
         Color shadow(const Ray &ray, Color light_color) {
             Point3 p = ray.origin;
-            Vector3 L = ray.direction/ ray.direction.norm();
+            Vector3 L = ray.direction / ray.direction.norm();
 
             Color C = light_color;
             while (C.max() > 0.003f) {
