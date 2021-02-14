@@ -24,8 +24,8 @@ Quelques matériaux en plus ont été rajoutés : *obsidian*, *ruby*, *pearl*, c
 ![alt](out3.png)
 
 Le plan horizontal fonctionnel :
-![alt](out4.ppm)
+![alt](out4.png)
 
 Le plan peu fonctionnel :
-![alt](out5.ppm)
-![alt](out6.ppm)
+![alt](out5.png)
+![alt](out6.png)
