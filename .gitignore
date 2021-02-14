@@ -1,0 +1,4 @@
+*.o
+*.tar.gz
+tp-ig-2.dox
+.qmake.stash

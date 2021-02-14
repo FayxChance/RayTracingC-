@@ -1,16 +1,17 @@
-#include <cmath>
-#include "PeriodicPlane.h"
+//
+// Created by neptune on 12/02/2021.
+//
 
-void
-rt::PeriodicPlane::draw(Viewer & /* viewer */) {
+#include "PeriodicPlane.h"
+void rt::PeriodicPlane::draw(rt::Viewer &viewer) {
     rt::Material m = main_m;
 
     glColor4fv(m.ambient);
     glBegin(GL_TRIANGLES);
 
-    glVertex2d(0, 0);
-    glVertex2d(0 + 20, 0);
-    glVertex2d(0, 0 + 20);
+    glVertex3d(o[0], o[1], o[2]);
+    glVertex3d((o + 10.0f * u)[0], (o + 10.0f * u)[1], (o + 10.0f * u)[2]);
+    glVertex3d((o + 10.0f * v)[0], (o + 10.0f * v)[1], (o + 10.0f * v)[2]);
 
     glEnd();
 
@@ -19,26 +20,25 @@ rt::PeriodicPlane::draw(Viewer & /* viewer */) {
     glColor4fv(m.ambient);
     glBegin(GL_TRIANGLES);
 
-    glVertex2d(20, 20);
-    glVertex2d(0 + 20, 0);
-    glVertex2d(0, 0 + 20);
+    Point3 p = o + 10.0f * u + 10.0f * v;
+
+    glVertex3d(p[0], p[1], p[2]);
+    glVertex3d((o + 10.0f * u)[0], (o + 10.0f * u)[1], (o + 10.0f * u)[2]);
+    glVertex3d((o + 10.0f * v)[0], (o + 10.0f * v)[1], (o + 10.0f * v)[2]);
 
     glEnd();
-
 }
 
-rt::Vector3
-rt::PeriodicPlane::getNormal( Point3 p ){
-    return u.cross(v);
+rt::Vector3 rt::PeriodicPlane::getNormal(rt::Point3 p) {
+    return u.cross(v) / u.cross(v).norm();;
 }
 
-rt::Material
-rt::PeriodicPlane::getMaterial( Point3 p ) {
+rt::Material rt::PeriodicPlane::getMaterial(rt::Point3 p) {
     Real x;
     Real y;
     coordinates(p, x, y);
 
-    if(x - floorf(x) > 1.0 - w
+    if (x - floorf(x) > 1.0 - w
         || x - floorf(x) < 0.0 + w
         || y - floorf(y) > 1.0 - w
         || y - floorf(y) < 0.0 + w)
@@ -62,22 +62,17 @@ rt::PeriodicPlane::rayIntersection( const Ray& ray, Point3& p ) {
         return -1.0f;
     }
     return 1.0f;
-
-    // Vector3 diff = ray.origin - o;
-    // float prod1 = diff.dot(getNormal(*p));
-    // float prod2 = ray.direction.dot(getNormal(*p));
-    // float prod3 = prod1 / prod2;
-    // if (prod3 < 0)
-    //     return 1.0f;
-    // else {
-    //     p = Point3(o + ray.direction*prod3);
-    //     return -1.0f;
-    // }
-    // return 1.0f;
 }
 
-void
-rt::PeriodicPlane::coordinates( Point3 p, Real& x, Real& y ) const {
-    x = u.dot(p);
-    y = v.dot(p);
+// TODO : voir lequel des coodinates il faut garder
+// void
+// rt::PeriodicPlane::coordinates( Point3 p, Real& x, Real& y ) const {
+//     x = u.dot(p);
+//     y = v.dot(p);
+// }
+
+void rt::PeriodicPlane::coordinates(rt::Point3 p, rt::Real &x, rt::Real &y) {
+    Vector3 op(p[0] - o[0], p[1] - o[1], p[2] - o[2]);
+    x = u.dot(op);
+    y = v.dot(op);
 }
