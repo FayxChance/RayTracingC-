@@ -33,3 +33,7 @@ Quelques ratés :
 
 Les ombres pas très fiables :
 ![alt](out5.png)
+
+## Dépôt git
+
+[Git](https://github.com/FayxChance/RayTracingC-)
