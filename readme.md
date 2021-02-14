@@ -7,7 +7,7 @@ Verdant Benjamin
 
 Toutes les questions jusqu'à la 4.5.
 
-Un début de plan infini mais pas fonctionnel : pour l'activer décommenter la ligne 99 du fichier *ray-tracer.cpp*.
+Un début de plan infini mais pas totalement fonctionnel : le plan horizontal est fonctionnel mais le vertical (celui en mirroir) ne reflète pas les objets. Le plan horizontal est activé de base (lignes 95-97). Le plan vertical est en commentaire, pour l'activer décommenter les lignes 98-100 du fichier *ray-tracer.cpp*.
 
 Anti-aliasing (question 5.3) fonctionnel : aller à la ligne 85 du fichier *Viewer.cpp* et décommenter celui voulu.
 
@@ -23,6 +23,9 @@ Quelques matériaux en plus ont été rajoutés : *obsidian*, *ruby*, *pearl*, c
 
 ![alt](out3.png)
 
-Le plan peu fonctionnel :
+Le plan horizontal fonctionnel :
+![alt](out4.ppm)
 
-![alt](out4.png)
+Le plan peu fonctionnel :
+![alt](out5.ppm)
+![alt](out6.ppm)

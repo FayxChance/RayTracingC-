@@ -94,11 +94,10 @@ int main(int argc, char **argv) {
 
     PeriodicPlane* pplaneH = new PeriodicPlane( Point3( 0.0, 0.0, 0.0 ), Vector3( 1.0, 0.0, 0.0 ), Vector3( 0.0, 1.0, 0.0 ),
         Material::whitePlastic(), Material::blackMatter(), 0.05f ); 
-        
-    PeriodicPlane* pplaneV = new PeriodicPlane( Point3( -10, 0, 0 ), Vector3( 0, 1.0, 0 ), Vector3( 0, 0, 1.0 ),
-        Material::mirror(), Material::blackMatter(), 0.025f );
     scene.addObject(pplaneH);
-    scene.addObject(pplaneV);
+    // PeriodicPlane* pplaneV = new PeriodicPlane( Point3( 0.0, 0, 0 ), Vector3( 0, 1.0, 0 ), Vector3( 0, 0, 1.0 ),
+    //     Material::mirror(), Material::blackMatter(), 0.025f );
+    // scene.addObject(pplaneV);
 
     Point3 bouleOriginelPos(0, 0, 0);
     Vector3 xUnit(1.0, 0, 0);

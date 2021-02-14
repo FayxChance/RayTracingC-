@@ -51,7 +51,7 @@ rt::PeriodicPlane::rayIntersection( const Ray& ray, Point3& p ) {
     Point3 O = ray.origin;
     Vector3 D = ray.direction;
     Vector3 n = getNormal(*p);
-    Real d = 0;
+    Real d = -1.0*o[0];
     
     float t = -1.0*( (O.dot(n) + d) / (D.dot(n)) );
     
