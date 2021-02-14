@@ -33,31 +33,19 @@ int main(int argc, char** argv)
   Scene scene;
 
     // Light at infinity
-    Light* light0 = new PointLight( GL_LIGHT0, Point4( 0,0,1,0 ),
+    Light* light1 = new PointLight( GL_LIGHT1, Point4( 5,5,20,1 ),
                                     Color( 1.0, 1.0, 1.0 ) );
-    Light* light1 = new PointLight( GL_LIGHT1, Point4( -10,-4,2,1 ),
-                                    Color( 1.0, 1.0, 1.0 ) );
-    scene.addLight( light0 );
     scene.addLight( light1 );
-    Point3 bouleOriginelPos(1.0,1.0,1.0);
+
+
+    Point3 bouleOriginelPos(5.0,5.0,5.0);
     Vector3 xUnit(1.0,0,0);
     Vector3 yUnit(0,1.0,0);
     Vector3 zUnit(0,0,1.0);
-    Real radius = 1.0;
+    Real radius = 5.0;
 // Objects
     Sphere* sphere1 = new Sphere( bouleOriginelPos, radius, Material::bronze() );
-    Sphere* sphere2 = new Sphere( bouleOriginelPos + 3.0f * xUnit + 3.0f * yUnit + 3.0f * zUnit, radius, Material::emerald() );
-    Sphere* sphere3 = new Sphere( bouleOriginelPos + 6.0f * xUnit + 6.0f * yUnit + 6.0f * zUnit, radius, Material::whitePlastic() );
-    Sphere* sphere4 = new Sphere( bouleOriginelPos + 9.0f * xUnit + 9.0f * yUnit + 9.0f * zUnit, radius, Material::glass() );
-    scene.addObject( sphere1 );
-    scene.addObject( sphere2 );
-    scene.addObject( sphere3 );
-    scene.addObject( sphere4 );
-
-    addBubble(scene,bouleOriginelPos + 0.0f * xUnit + 6.0f * yUnit + 0.0f * zUnit,radius,Material::bronze());
-    addBubble(scene,bouleOriginelPos + 3.0f * xUnit + 9.0f * yUnit + 0.0f * zUnit,radius,Material::emerald());
-    addBubble(scene,bouleOriginelPos + 6.0f * xUnit + 12.0f * yUnit + 0.0f * zUnit,radius,Material::whitePlastic());
-    addBubble(scene,bouleOriginelPos + 9.0f * xUnit + 15.0f * yUnit + 0.0f * zUnit,radius,Material::glass());
+    scene.addObject(sphere1);
 
 
     PeriodicPlane* pplane = new PeriodicPlane( Point3( 0.0, 0.0, 0.0 ), Vector3( 5.0, 0.0, 0.0 ), Vector3( 0.0, 5.0, 0.0 ),
