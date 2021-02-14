@@ -22,7 +22,6 @@ void addBubble(Scene &scene, Point3 c, Real r, Material transp_m) {
     scene.addObject(sphere_in);
 }
 
-
 /**
   * @param centre : départ de la branche d'adn
   * @param rayonInterne : distance entre les 2 branches et le centre
@@ -93,10 +92,10 @@ int main(int argc, char **argv) {
     scene.addLight(light1);
 
 
-    PeriodicPlane *pplane = new PeriodicPlane(Point3(0, 0, 0), Vector3(5, 0, 0), Vector3(0, 5, 0),
-                                              Material::whitePlastic(), Material::blackMatter(), 0.05f);
+    PeriodicPlane* pplaneH = new PeriodicPlane( Point3( 0.0, 0.0, -2.0 ), Vector3( 1.0, 0.0, 0.0 ), Vector3( 0.0, 1.0, 0.0 ),
+        Material::whitePlastic(), Material::blackMatter(), 0.05f ); 
+    //scene.addObject(pplaneH);
 
-   // scene.addObject(pplane);
 
     Point3 bouleOriginelPos(0, 0, 0);
     Vector3 xUnit(1.0, 0, 0);
@@ -153,9 +152,6 @@ int main(int argc, char **argv) {
     //addADN(scene, Point3(-40, -40, 0), 20, 3, 30, Material::silver(), m2s);
     //addADN(scene, Point3(-40, 40, 0), 20, 3, 30, Material::obsidian(), m3s);
     //addADN(scene, Point3(40, -40, 0), 20, 3, 30, Material::jade(), m4s);
-
-
-
 
     // Instantiate the viewer.
     Viewer viewer;
