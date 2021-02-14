@@ -26,3 +26,9 @@ Quelques matériaux en plus ont été rajoutés : *obsidian*, *ruby*, *pearl*, c
 Le plan peu fonctionnel :
 
 ![alt](out4.png)
+
+Quelques ratés :
+
+![alt](blackHole.jpeg)
+
+![alt](out5.png)
